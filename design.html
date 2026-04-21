@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NK Graphics BD – প্যাকেজিং ডিজাইন প্যাকেজ</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:        #3A3FCC;
+    --blue-dark:   #272BB8;
+    --blue-deeper: #1A1E8A;
+    --blue-light:  #5059E0;
+    --orange:      #F5843A;
+    --orange-dark: #D9681F;
+    --orange-light:#F9C06A;
+    --white:       #FFFFFF;
+    --off-white:   #F0F0FF;
+    --text-dark:   #1A1D6E;
+    --text-muted:  rgba(255,255,255,0.55);
+    --surface:     rgba(255,255,255,0.06);
+    --border:      rgba(255,255,255,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Hind Siliguri', sans-serif;
+    background: var(--blue-dark);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── BG TEXTURE ─── */
+  body::before {
+    content:'';
+    position:fixed; inset:0; z-index:0;
+    background:
+      radial-gradient(ellipse 70% 50% at 10% 20%, rgba(245,132,58,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 90% 80%, rgba(58,63,204,0.6) 0%, transparent 70%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.015) 40px,
+        rgba(255,255,255,0.015) 41px
+      );
+    pointer-events:none;
+  }
+
+  .page { position:relative; z-index:1; }
+
+  /* ─── NAVBAR ─── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(26,30,138,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(245,132,58,0.2);
+    position: sticky; top:0; z-index:100;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-logo img {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid var(--orange);
+  }
+
+  .nav-logo-text {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--orange-light);
+    line-height: 1;
+  }
+
+  .nav-logo-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .nav-tag {
+    background: rgba(245,132,58,0.15);
+    border: 1px solid rgba(245,132,58,0.35);
+    color: var(--orange-light);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    text-align: center;
+    padding: 72px 24px 56px;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,132,58,0.1);
+    border: 1px solid rgba(245,132,58,0.3);
+    border-radius: 30px;
+    padding: 6px 18px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange-light);
+    margin-bottom: 24px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    animation: fadeDown 0.7s ease 0.1s both;
+  }
+
+  .hero h1 .accent { color: var(--orange); }
+  .hero h1 .light  { color: var(--orange-light); }
+
+  .hero p {
+    font-size: clamp(14px, 2vw, 17px);
+    color: rgba(255,255,255,0.65);
+    max-width: 540px;
+    margin: 0 auto 36px;
+    line-height: 1.8;
+    animation: fadeDown 0.7s ease 0.2s both;
+  }
+
+  .hero-colors {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    animation: fadeDown 0.7s ease 0.3s both;
+  }
+
+  .color-swatch {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .color-swatch-label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+  }
+
+  .swatch-name { font-size: 10px; color: var(--text-muted); }
+  .swatch-hex  { font-size: 12px; color: var(--white); font-weight: 600; font-family: monospace; }
+
+  .swatch-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .swatch-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+    margin: 0 4px;
+  }
+
+  /* ─── SECTION TITLE ─── */
+  .section-title {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .section-title h2 {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .section-title h2 span { color: var(--orange); }
+
+  .section-title p {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .title-line {
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--orange), var(--orange-light));
+    border-radius: 2px;
+    margin: 12px auto 0;
+  }
+
+  /* ─── PACKAGES ─── */
+  .packages {
+    padding: 0 24px 64px;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeUp 0.6s ease both;
+    position: relative;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+
+  .card.popular {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 1px var(--orange), 0 8px 40px rgba(245,132,58,0.2);
+  }
+
+  .card.premium {
+    border-color: var(--orange-light);
+    background: linear-gradient(145deg, rgba(245,132,58,0.08), rgba(58,63,204,0.1));
+  }
+
+  /* Top colored bar */
+  .card-bar {
+    height: 4px;
+  }
+  .bar-basic   { background: linear-gradient(90deg, #5059E0, #3A3FCC); }
+  .bar-popular { background: linear-gradient(90deg, var(--orange), var(--orange-light)); }
+  .bar-premium { background: linear-gradient(90deg, var(--orange-light), #FFE0A0, var(--orange)); }
+
+  .popular-ribbon {
+    position: absolute;
+    top: 16px; right: -28px;
+    background: var(--orange);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 36px;
+    transform: rotate(35deg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .card-head {
+    padding: 28px 28px 18px;
+  }
+
+  .pkg-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .pkg-tier {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .card.premium .pkg-tier { color: var(--orange-light); }
+
+  .pkg-name {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+
+  .pkg-tagline {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  .tk { font-size: 16px; color: var(--orange-light); font-weight: 700; }
+  .amount {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+  }
+  .card.popular .amount { color: var(--orange-light); }
+  .card.premium .amount { color: var(--orange-light); }
+
+  .price-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .rev-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+  }
+
+  .rev-pill .rnum {
+    color: var(--orange-light);
+    font-weight: 700;
+  }
+
+  /* divider */
+  .card-div {
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin: 0 28px;
+  }
+
+  .card-body {
+    padding: 20px 28px 28px;
+  }
+
+  .features-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .feat-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feat-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.82);
+  }
+
+  .fi {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-top: 2px;
+    font-weight: 700;
+  }
+
+  .fi-yes  { background: rgba(245,132,58,0.2); color: var(--orange); }
+  .fi-star { background: rgba(249,192,106,0.2); color: var(--orange-light); }
+  .fi-no   { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3); }
+
+  .delivery-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    background: rgba(58,63,204,0.4);
+    border: 1px solid rgba(80,89,224,0.4);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ─── COMPARE TABLE ─── */
+  .compare-wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  .compare-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead tr {
+    background: rgba(58,63,204,0.5);
+  }
+
+  thead th {
+    padding: 14px 18px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--orange-light);
+    letter-spacing: 0.5px;
+  }
+
+  thead th:first-child { text-align: left; color: rgba(255,255,255,0.6); }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody td {
+    padding: 12px 18px;
+    text-align: center;
+    color: rgba(255,255,255,0.75);
+    vertical-align: middle;
+  }
+
+  tbody td:first-child {
+    text-align: left;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .t-yes { color: #6AE88A; font-size: 17px; }
+  .t-no  { color: rgba(255,255,255,0.2); font-size: 17px; }
+  .t-val { color: var(--orange-light); font-weight: 700; }
+  .t-price { color: var(--orange); font-weight: 800; font-size: 16px; font-family: 'Baloo Da 2', cursive; }
+
+  /* ─── WHO IS IT FOR ─── */
+  .who-wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 16px;
+  }
+
+  .who-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .who-card:nth-child(2) { animation-delay: 0.1s; }
+  .who-card:nth-child(3) { animation-delay: 0.2s; }
+
+  .who-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .who-pkg {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .who-title {
+    font-family: 'Baloo Da 2', cursive;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--orange-light);
+    margin-bottom: 6px;
+  }
+
+  .who-desc {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center;
+    padding: 28px 24px 40px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  footer span { color: var(--orange); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity:0; transform:translateY(-20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(28px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media(max-width:520px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 48px 16px 40px; }
+    .card-head { padding: 20px 20px 14px; }
+    .card-body { padding: 16px 20px 20px; }
+    .compare-box { overflow-x: auto; }
+    table { min-width: 520px; }
+    .hero-colors { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ─── NAV ─── -->
+<nav>
+  <div class="nav-logo">
+    <img src="/mnt/user-data/uploads/1000095200.jpg" alt="NK Graphics BD Logo" onerror="this.style.display='none'">
+    <div>
+      <div class="nav-logo-text">NK Graphics</div>
+      <div class="nav-logo-sub">BD · Design Studio</div>
+    </div>
+  </div>
+  <div class="nav-tag">📦 প্যাকেজিং ডিজাইন</div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-eyebrow">✦ Label &amp; Packaging Design Service</div>
+  <h1>
+    প্রোডাক্টের <span class="accent">লেবেল</span> ও<br>
+    <span class="light">প্যাকেজিং ডিজাইন</span> প্যাকেজ
+  </h1>
+  <p>আপনার বাজেট ও প্রয়োজন অনুযায়ী তিনটি প্যাকেজ — শুরু থেকে প্রিমিয়াম পর্যন্ত।<br>প্রতিটি প্যাকেজ প্রিন্ট-রেডি ফাইলসহ ডেলিভারি করা হয়।</p>
+
+  <!-- Brand colors -->
+  <div class="hero-colors">
+    <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.4)">Brand Colors</span>
+    <div class="swatch-divider"></div>
+    <div class="swatch-group">
+      <div class="color-swatch" style="background:#3A3FCC"></div>
+      <div class="color-swatch-label">
+        <span class="swatch-name">Brand Blue</span>
+        <span class="swatch-hex">#3A3FCC</span>
+      </div>
+    </div>
+    <div class="swatch-divider"></div>
+    <div class="swatch-group">
+      <div class="color-swatch" style="background:#F5843A"></div>
+      <div class="color-swatch-label">
+        <span class="swatch-name">Brand Orange</span>
+        <span class="swatch-hex">#F5843A</span>
+      </div>
+    </div>
+    <div class="swatch-divider"></div>
+    <div class="swatch-group">
+      <div class="color-swatch" style="background:#F9C06A"></div>
+      <div class="color-swatch-label">
+        <span class="swatch-name">Accent Gold</span>
+        <span class="swatch-hex">#F9C06A</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PACKAGES ─── -->
+<section class="packages">
+  <div class="section-title">
+    <h2>আমাদের <span>ডিজাইন প্যাকেজ</span></h2>
+    <p>তিনটি প্যাকেজ — তিনটি চাহিদার জন্য</p>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- STARTER -->
+    <div class="card">
+      <div class="card-bar bar-basic"></div>
+      <div class="card-head">
+        <div class="pkg-icon">🌱</div>
+        <div class="pkg-tier">Starter</div>
+        <div class="pkg-name">বেসিক প্যাকেজ</div>
+        <div class="pkg-tagline">নতুন প্রোডাক্টের জন্য সম্পূর্ণ লেবেল ও বক্স — প্রিন্টের জন্য রেডি</div>
+        <div class="price-row">
+          <span class="tk">৳</span>
+          <span class="amount">3,500</span>
+        </div>
+        <div class="price-sub">একটি প্রোডাক্টের জন্য</div>
+        <div class="rev-pill">🔁 রিভিশন — <span class="rnum">১ বার</span></div>
+      </div>
+      <div class="card-div"></div>
+      <div class="card-body">
+        <div class="features-label">এই প্যাকেজে যা পাবেন</div>
+        <ul class="feat-list">
+          <li><span class="fi fi-yes">✓</span> লেবেল ডিজাইন (Front + Back)</li>
+          <li><span class="fi fi-yes">✓</span> বক্স ডিজাইন (সব প্যানেল)</li>
+          <li><span class="fi fi-yes">✓</span> Dieline / Die-cut টেমপ্লেট সহ</li>
+          <li><span class="fi fi-yes">✓</span> Print-ready PDF ফাইল</li>
+          <li><span class="fi fi-yes">✓</span> ১টি কনসেপ্ট</li>
+          <li><span class="fi fi-no">—</span> 3D মকআপ নেই</li>
+          <li><span class="fi fi-no">—</span> সোশ্যাল পোস্ট নেই</li>
+        </ul>
+        <div class="delivery-tag">🕐 ডেলিভারি: ৩–৪ কার্যদিবস</div>
+      </div>
+    </div>
+
+    <!-- STANDARD (Popular) -->
+    <div class="card popular">
+      <div class="card-bar bar-popular"></div>
+      <div class="popular-ribbon">জনপ্রিয়</div>
+      <div class="card-head">
+        <div class="pkg-icon">🚀</div>
+        <div class="pkg-tier">Standard</div>
+        <div class="pkg-name">প্রো প্যাকেজ</div>
+        <div class="pkg-tagline">বেশি কনসেপ্ট, রিভিশন ও এক্সট্রা ফিচার — ব্যবসায়ীর জন্য আদর্শ</div>
+        <div class="price-row">
+          <span class="tk">৳</span>
+          <span class="amount">8,000</span>
+        </div>
+        <div class="price-sub">একটি প্রোডাক্টের জন্য</div>
+        <div class="rev-pill">🔁 রিভিশন — <span class="rnum">৩ বার</span></div>
+      </div>
+      <div class="card-div"></div>
+      <div class="card-body">
+        <div class="features-label">এই প্যাকেজে যা পাবেন</div>
+        <ul class="feat-list">
+          <li><span class="fi fi-yes">✓</span> লেবেল + বক্স ডিজাইন (সব সাইড)</li>
+          <li><span class="fi fi-yes">✓</span> Dieline / Die-cut টেমপ্লেট সহ</li>
+          <li><span class="fi fi-yes">✓</span> Print-ready CMYK ফাইল</li>
+          <li><span class="fi fi-yes">✓</span> ২টি কনসেপ্ট (বেছে নেওয়া যাবে)</li>
+          <li><span class="fi fi-yes">✓</span> 3D প্রোডাক্ট মকআপ</li>
+          <li><span class="fi fi-yes">✓</span> AI + PDF সোর্স ফাইল</li>
+          <li><span class="fi fi-no">—</span> সোশ্যাল পোস্ট ও টাইপোগ্রাফি কিট নেই</li>
+        </ul>
+        <div class="delivery-tag">🕐 ডেলিভারি: ৫–৭ কার্যদিবস</div>
+      </div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="card premium">
+      <div class="card-bar bar-premium"></div>
+      <div class="card-head">
+        <div class="pkg-icon">👑</div>
+        <div class="pkg-tier">Premium</div>
+        <div class="pkg-name">ফুল প্যাকেজ</div>
+        <div class="pkg-tagline">টাইপোগ্রাফি, সোশ্যাল পোস্ট ও স্যাম্পল ব্যানারসহ — বড় প্রোডাক্ট লঞ্চের জন্য</div>
+        <div class="price-row">
+          <span class="tk">৳</span>
+          <span class="amount">18,000</span>
+        </div>
+        <div class="price-sub">একটি প্রোডাক্ট ব্র্যান্ডের জন্য</div>
+        <div class="rev-pill">🔁 রিভিশন — <span class="rnum">৫ বার</span></div>
+      </div>
+      <div class="card-div"></div>
+      <div class="card-body">
+        <div class="features-label">এই প্যাকেজে যা পাবেন</div>
+        <ul class="feat-list">
+          <li><span class="fi fi-star">★</span> লেবেল + বক্স (সব প্যানেল + Dieline)</li>
+          <li><span class="fi fi-star">★</span> Print-ready CMYK + AI ফাইল</li>
+          <li><span class="fi fi-star">★</span> ৩টি কনসেপ্ট</li>
+          <li><span class="fi fi-star">★</span> Cinematic 3D ভিজ্যুয়াল মকআপ</li>
+          <li><span class="fi fi-star">★</span> ব্র্যান্ড টাইপোগ্রাফি গাইড</li>
+          <li><span class="fi fi-star">★</span> ২টি সোশ্যাল মিডিয়া স্যাম্পল পোস্ট</li>
+          <li><span class="fi fi-star">★</span> সব ফরম্যাট (AI, PDF, PNG, JPG)</li>
+        </ul>
+        <div class="delivery-tag">🕐 ডেলিভারি: ১০–১৪ কার্যদিবস</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── COMPARE TABLE ─── -->
+<section class="compare-wrap">
+  <div class="section-title">
+    <h2><span>পাশাপাশি</span> তুলনা</h2>
+    <p>প্যাকেজগুলোর পার্থক্য একনজরে দেখুন</p>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="compare-box">
+    <table>
+      <thead>
+        <tr>
+          <th>ফিচার</th>
+          <th>🌱 Starter</th>
+          <th>🚀 Standard</th>
+          <th>👑 Premium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>লেবেল ডিজাইন</td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>বক্স / প্যাকেজিং ডিজাইন</td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Dieline টেমপ্লেট</td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>Print-ready ফাইল</td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>কনসেপ্ট সংখ্যা</td>
+          <td><span class="t-val">১টি</span></td>
+          <td><span class="t-val">২টি</span></td>
+          <td><span class="t-val">৩টি</span></td>
+        </tr>
+        <tr>
+          <td>3D মকআপ</td>
+          <td><span class="t-no">✗</span></td>
+          <td><span class="t-yes">✓</span></td>
+          <td><span class="t-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>টাইপোগ্রাফি গাইড</td>
+          <td><span class="t-no">✗</span></td>
+          <td><span class="t-no">✗</span></td>
+          <td><span class="t-yes">✓</span></td>
+        </tr>
+        <tr>
+          <td>সোশ্যাল মিডিয়া স্যাম্পল পোস্ট</td>
+          <td><span class="t-no">✗</span></td>
+          <td><span class="t-no">✗</span></td>
+          <td><span class="t-val">২টি পোস্ট</span></td>
+        </tr>
+        <tr>
+          <td>রিভিশন</td>
+          <td><span class="t-val">১ বার</span></td>
+          <td><span class="t-val">৩ বার</span></td>
+          <td><span class="t-val">৫ বার</span></td>
+        </tr>
+        <tr>
+          <td>ডেলিভারি</td>
+          <td><span class="t-val">৩–৪ দিন</span></td>
+          <td><span class="t-val">৫–৭ দিন</span></td>
+          <td><span class="t-val">১০–১৪ দিন</span></td>
+        </tr>
+        <tr>
+          <td>মূল্য</td>
+          <td><span class="t-price">৳৩,৫০০</span></td>
+          <td><span class="t-price">৳৮,০০০</span></td>
+          <td><span class="t-price">৳১৮,০০০</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─── WHO IS IT FOR ─── -->
+<section class="who-wrap">
+  <div class="section-title">
+    <h2>কোন প্যাকেজ <span>কাদের জন্য?</span></h2>
+    <p>আপনার অবস্থান বুঝে সঠিক প্যাকেজ বেছে নিন</p>
+    <div class="title-line"></div>
+  </div>
+
+  <div class="who-grid">
+    <div class="who-card">
+      <div class="who-icon">🌱</div>
+      <div>
+        <div class="who-pkg">Starter · ৳৩,৫০০</div>
+        <div class="who-title">নতুন উদ্যোক্তার জন্য</div>
+        <div class="who-desc">যারা প্রথমবার প্রোডাক্ট বাজারে আনছেন, বাজেট সীমিত কিন্তু প্রিন্টের জন্য রেডি একটা সম্পূর্ণ ডিজাইন দরকার — তাদের জন্য আদর্শ।</div>
+      </div>
+    </div>
+
+    <div class="who-card">
+      <div class="who-icon">🚀</div>
+      <div>
+        <div class="who-pkg">Standard · ৳৮,০০০</div>
+        <div class="who-title">ছোট ব্যবসায়ীর জন্য</div>
+        <div class="who-desc">যারা বিকল্প কনসেপ্ট দেখে বেছে নিতে চান, বায়ারকে 3D মকআপ দিয়ে প্রেজেন্ট করতে চান এবং একটু বেশি রিভিশনের সুবিধা চান।</div>
+      </div>
+    </div>
+
+    <div class="who-card">
+      <div class="who-icon">👑</div>
+      <div>
+        <div class="who-pkg">Premium · ৳১৮,০০০</div>
+        <div class="who-title">বড় প্রোডাক্ট লঞ্চের জন্য</div>
+        <div class="who-desc">যারা একটা বড় প্রোডাক্ট মার্কেটে আনছেন এবং শুধু বক্স নয়, সোশ্যাল মিডিয়া পোস্ট থেকে শুরু করে ব্র্যান্ড ফন্ট পর্যন্ত সব একসাথে চান।</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <p>© 2025 <span>NK Graphics BD</span> · সব ধরনের প্যাকেজিং ও লেবেল ডিজাইন সার্ভিস</p>
+  <p style="margin-top:6px;">রিভিশনের বাইরে পরিবর্তনে অতিরিক্ত চার্জ প্রযোজ্য হতে পারে।</p>
+</footer>
+
+</div>
+</body>
+</html>
